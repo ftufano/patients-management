@@ -51,6 +51,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Inactivity Timeout Minutes
+    |--------------------------------------------------------------------------
+    |
+    | This value controls the number of minutes of inactivity allowed before
+    | a token is considered expired. Set to null or 0 to disable.
+    |
+    */
+
+    'inactivity_timeout' => env('SANCTUM_INACTIVITY_TIMEOUT', 10),
+
+    /*
+    |--------------------------------------------------------------------------
     | Token Prefix
     |--------------------------------------------------------------------------
     |

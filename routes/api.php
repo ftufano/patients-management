@@ -35,6 +35,3 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // Authentication: Login API
 Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'login']);
-
-// Authentication: Logout API (protected)
-Route::middleware('auth:sanctum')->post('/logout', [\App\Http\Controllers\Auth\LogoutController::class, 'logout']);
