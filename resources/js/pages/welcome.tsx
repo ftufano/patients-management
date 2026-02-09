@@ -51,17 +51,26 @@ export default function Welcome() {
                     </nav>
                 </header>
                 <div className="relative z-10 flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0">
-                    <main className="flex w-full max-w-[335px] flex-col-reverse lg:max-w-4xl lg:flex-row">
+                    <main className="flex h-[320px] w-full max-w-[335px] flex-col-reverse lg:h-[380px] lg:max-w-4xl lg:flex-row">
                         <div className="flex-1 rounded-br-lg rounded-bl-lg bg-[#0b2431] p-8 text-[13px] leading-[20px] shadow-[inset_0px_0px_0px_1px_rgba(55,198,232,0.3)] lg:rounded-tl-lg lg:rounded-br-none lg:p-16 dark:bg-[#091e28] dark:text-[#d7f4ff] dark:shadow-[inset_0px_0px_0px_1px_rgba(55,198,232,0.25)]">
-                            <h1 className="text-2xl font-semibold tracking-tight text-[#d7f4ff] lg:text-3xl">
-                                Patients Manager
-                            </h1>
-                            <p className="mt-2 text-sm text-[#9ed8e8]">
-                                Streamline appointments, records, and care.
-                            </p>
+                            <div className="flex h-full flex-col items-center justify-center">
+                                <div className="mb-6 flex">
+                                    <img
+                                        src="/images/welcome-logo.png"
+                                        alt="Patients Manager logo"
+                                        className="h-28 w-28 rounded-2xl object-cover"
+                                    />
+                                </div>
+                                <h1 className="text-2xl font-semibold tracking-tight text-[#d7f4ff] lg:text-3xl">
+                                    Patients Manager
+                                </h1>
+                                <p className="mt-2 text-sm text-[#9ed8e8]">
+                                    Streamline appointments, records, and care.
+                                </p>
+                            </div>
                         </div>
                         <div
-                            className="relative -mb-px aspect-[335/376] w-full shrink-0 overflow-hidden rounded-t-lg bg-[#0a2230] bg-cover bg-center lg:mb-0 lg:-ml-px lg:aspect-auto lg:w-[438px] lg:rounded-t-none lg:rounded-r-lg dark:bg-[#071b24]"
+                            className="relative -mb-px h-full w-full shrink-0 overflow-hidden rounded-t-lg bg-white bg-contain bg-center bg-no-repeat lg:mb-0 lg:-ml-px lg:w-[438px] lg:rounded-t-none lg:rounded-r-lg"
                             style={{
                                 backgroundImage:
                                     "url('/images/patients-panel.png')",
