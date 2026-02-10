@@ -14,15 +14,36 @@ import { Form, Head } from '@inertiajs/react';
 interface LoginProps {
     status?: string;
     canResetPassword: boolean;
+    translations?: {
+        page_title: string;
+        title: string;
+        description: string;
+        email_label: string;
+        email_placeholder: string;
+        password_label: string;
+        password_placeholder: string;
+        forgot_password: string;
+        remember_me: string;
+        submit: string;
+        signup_prompt: string;
+        signup_link: string;
+    };
 }
 
-export default function Login({ status, canResetPassword }: LoginProps) {
+export default function Login({
+    status,
+    canResetPassword,
+    translations,
+}: LoginProps) {
     return (
         <AuthLayout
-            title="Log in to your account"
-            description="Enter your email and password below to log in"
+            title={translations?.title ?? 'Log in to your account'}
+            description={
+                translations?.description ??
+                'Enter your email and password below to log in'
+            }
         >
-            <Head title="Log in" />
+            <Head title={translations?.page_title ?? 'Log in'} />
 
             <Form
                 {...store.form()}
@@ -33,7 +54,10 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
+                                <Label htmlFor="email">
+                                    {translations?.email_label ??
+                                        'Email address'}
+                                </Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -42,21 +66,28 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     autoFocus
                                     tabIndex={1}
                                     autoComplete="email"
-                                    placeholder="email@example.com"
+                                    placeholder={
+                                        translations?.email_placeholder ??
+                                        'email@example.com'
+                                    }
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
                                 <div className="flex items-center">
-                                    <Label htmlFor="password">Password</Label>
+                                    <Label htmlFor="password">
+                                        {translations?.password_label ??
+                                            'Password'}
+                                    </Label>
                                     {canResetPassword && (
                                         <TextLink
                                             href={request()}
                                             className="ml-auto text-sm"
                                             tabIndex={5}
                                         >
-                                            Forgot password?
+                                            {translations?.forgot_password ??
+                                                'Forgot password?'}
                                         </TextLink>
                                     )}
                                 </div>
@@ -67,7 +98,10 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     required
                                     tabIndex={2}
                                     autoComplete="current-password"
-                                    placeholder="Password"
+                                    placeholder={
+                                        translations?.password_placeholder ??
+                                        'Password'
+                                    }
                                 />
                                 <InputError message={errors.password} />
                             </div>
@@ -78,7 +112,9 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                     name="remember"
                                     tabIndex={3}
                                 />
-                                <Label htmlFor="remember">Remember me</Label>
+                                <Label htmlFor="remember">
+                                    {translations?.remember_me ?? 'Remember me'}
+                                </Label>
                             </div>
 
                             <Button
@@ -89,14 +125,15 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                                 data-test="login-button"
                             >
                                 {processing && <Spinner />}
-                                Log in
+                                {translations?.submit ?? 'Log in'}
                             </Button>
                         </div>
 
                         <div className="text-center text-sm text-muted-foreground">
-                            Don't have an account?{' '}
+                            {translations?.signup_prompt ??
+                                "Don't have an account?"}{' '}
                             <TextLink href={register()} tabIndex={5}>
-                                Sign up
+                                {translations?.signup_link ?? 'Sign up'}
                             </TextLink>
                         </div>
                     </>

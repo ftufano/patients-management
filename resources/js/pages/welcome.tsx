@@ -2,12 +2,24 @@ import { dashboard, login, register } from '@/routes';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 
+type WelcomeTranslations = {
+    title: string;
+    dashboard: string;
+    login: string;
+    register: string;
+    product_name: string;
+    tagline: string;
+    logo_alt: string;
+};
+
 export default function Welcome() {
-    const { auth } = usePage<SharedData>().props;
+    const { auth, translations } = usePage<
+        SharedData & { translations?: WelcomeTranslations }
+    >().props;
 
     return (
         <>
-            <Head title="Welcome">
+            <Head title={translations?.title ?? 'Welcome'}>
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link
                     href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600"
@@ -30,7 +42,7 @@ export default function Welcome() {
                                 href={dashboard()}
                                 className="inline-block rounded-sm border border-[#1e4f61] px-5 py-1.5 text-sm leading-normal text-[#1e4f61] transition duration-200 ease-out hover:border-[#2a6a80] hover:bg-[#d7f4ff]/40 hover:shadow-[0_0_0_1px_rgba(30,79,97,0.25)] focus-visible:ring-2 focus-visible:ring-[#37c6e8]/60 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] active:bg-[#d7f4ff]/60 dark:border-[#1e4f61] dark:text-[#1e4f61] dark:hover:border-[#2a6a80] dark:hover:bg-[#d7f4ff]/30"
                             >
-                                Dashboard
+                                {translations?.dashboard ?? 'Dashboard'}
                             </Link>
                         ) : (
                             <>
@@ -38,39 +50,44 @@ export default function Welcome() {
                                     href={login()}
                                     className="inline-block rounded-sm border border-transparent px-5 py-1.5 text-sm leading-normal text-[#1e4f61] transition duration-200 ease-out hover:border-[#1e4f61] hover:bg-[#d7f4ff]/40 hover:shadow-[0_0_0_1px_rgba(30,79,97,0.2)] focus-visible:ring-2 focus-visible:ring-[#37c6e8]/60 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] active:bg-[#d7f4ff]/60 dark:text-[#1e4f61] dark:hover:border-[#2a6a80] dark:hover:bg-[#d7f4ff]/30"
                                 >
-                                    Log in
+                                    {translations?.login ?? 'Log in'}
                                 </Link>
                                 <Link
                                     href={register()}
                                     className="inline-block rounded-sm border border-[#1e4f61] px-5 py-1.5 text-sm leading-normal text-[#1e4f61] transition duration-200 ease-out hover:border-[#2a6a80] hover:bg-[#d7f4ff]/40 hover:shadow-[0_0_0_1px_rgba(30,79,97,0.25)] focus-visible:ring-2 focus-visible:ring-[#37c6e8]/60 focus-visible:ring-offset-2 focus-visible:outline-none active:scale-[0.98] active:bg-[#d7f4ff]/60 dark:border-[#1e4f61] dark:text-[#1e4f61] dark:hover:border-[#2a6a80] dark:hover:bg-[#d7f4ff]/30"
                                 >
-                                    Register
+                                    {translations?.register ?? 'Register'}
                                 </Link>
                             </>
                         )}
                     </nav>
                 </header>
                 <div className="relative z-10 flex w-full items-center justify-center opacity-100 transition-opacity duration-750 lg:grow starting:opacity-0">
-                    <main className="flex h-[320px] w-full max-w-[335px] flex-col-reverse lg:h-[380px] lg:max-w-4xl lg:flex-row">
+                    <main className="flex w-full max-w-[335px] flex-col-reverse lg:h-[380px] lg:max-w-4xl lg:flex-row">
                         <div className="flex-1 rounded-br-lg rounded-bl-lg bg-[#0b2431] p-8 text-[13px] leading-[20px] shadow-[inset_0px_0px_0px_1px_rgba(55,198,232,0.3)] lg:rounded-tl-lg lg:rounded-br-none lg:p-16 dark:bg-[#091e28] dark:text-[#d7f4ff] dark:shadow-[inset_0px_0px_0px_1px_rgba(55,198,232,0.25)]">
                             <div className="flex h-full flex-col items-center justify-center">
                                 <div className="mb-6 flex">
                                     <img
                                         src="/images/welcome-logo.png"
-                                        alt="Patients Manager logo"
+                                        alt={
+                                            translations?.logo_alt ??
+                                            'Patients Manager logo'
+                                        }
                                         className="h-28 w-28 rounded-2xl object-cover"
                                     />
                                 </div>
                                 <h1 className="text-2xl font-semibold tracking-tight text-[#d7f4ff] lg:text-3xl">
-                                    Patients Manager
+                                    {translations?.product_name ??
+                                        'Patients Manager'}
                                 </h1>
                                 <p className="mt-2 text-sm text-[#9ed8e8]">
-                                    Streamline appointments, records, and care.
+                                    {translations?.tagline ??
+                                        'Streamline appointments, records, and care.'}
                                 </p>
                             </div>
                         </div>
                         <div
-                            className="relative -mb-px h-full w-full shrink-0 overflow-hidden rounded-t-lg bg-white bg-contain bg-center bg-no-repeat lg:mb-0 lg:-ml-px lg:w-[438px] lg:rounded-t-none lg:rounded-r-lg"
+                            className="relative -mb-px h-[220px] w-full shrink-0 overflow-hidden rounded-t-lg bg-white bg-contain bg-center bg-no-repeat lg:mb-0 lg:-ml-px lg:h-full lg:w-[438px] lg:rounded-t-none lg:rounded-r-lg"
                             style={{
                                 backgroundImage:
                                     "url('/images/patients-panel.png')",

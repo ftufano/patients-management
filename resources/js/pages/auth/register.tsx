@@ -10,13 +10,35 @@ import { Label } from '@/components/ui/label';
 import { Spinner } from '@/components/ui/spinner';
 import AuthLayout from '@/layouts/auth-layout';
 
-export default function Register() {
+interface RegisterProps {
+    translations?: {
+        page_title: string;
+        title: string;
+        description: string;
+        name_label: string;
+        name_placeholder: string;
+        email_label: string;
+        email_placeholder: string;
+        password_label: string;
+        password_placeholder: string;
+        password_confirm_label: string;
+        password_confirm_placeholder: string;
+        submit: string;
+        login_prompt: string;
+        login_link: string;
+    };
+}
+
+export default function Register({ translations }: RegisterProps) {
     return (
         <AuthLayout
-            title="Create an account"
-            description="Enter your details below to create your account"
+            title={translations?.title ?? 'Create an account'}
+            description={
+                translations?.description ??
+                'Enter your details below to create your account'
+            }
         >
-            <Head title="Register" />
+            <Head title={translations?.page_title ?? 'Register'} />
             <Form
                 {...RegisteredUserController.store.form()}
                 resetOnSuccess={['password', 'password_confirmation']}
@@ -27,7 +49,9 @@ export default function Register() {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="name">Name</Label>
+                                <Label htmlFor="name">
+                                    {translations?.name_label ?? 'Name'}
+                                </Label>
                                 <Input
                                     id="name"
                                     type="text"
@@ -36,7 +60,10 @@ export default function Register() {
                                     tabIndex={1}
                                     autoComplete="name"
                                     name="name"
-                                    placeholder="Full name"
+                                    placeholder={
+                                        translations?.name_placeholder ??
+                                        'Full name'
+                                    }
                                 />
                                 <InputError
                                     message={errors.name}
@@ -45,7 +72,10 @@ export default function Register() {
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="email">Email address</Label>
+                                <Label htmlFor="email">
+                                    {translations?.email_label ??
+                                        'Email address'}
+                                </Label>
                                 <Input
                                     id="email"
                                     type="email"
@@ -53,13 +83,18 @@ export default function Register() {
                                     tabIndex={2}
                                     autoComplete="email"
                                     name="email"
-                                    placeholder="email@example.com"
+                                    placeholder={
+                                        translations?.email_placeholder ??
+                                        'email@example.com'
+                                    }
                                 />
                                 <InputError message={errors.email} />
                             </div>
 
                             <div className="grid gap-2">
-                                <Label htmlFor="password">Password</Label>
+                                <Label htmlFor="password">
+                                    {translations?.password_label ?? 'Password'}
+                                </Label>
                                 <Input
                                     id="password"
                                     type="password"
@@ -67,14 +102,18 @@ export default function Register() {
                                     tabIndex={3}
                                     autoComplete="new-password"
                                     name="password"
-                                    placeholder="Password"
+                                    placeholder={
+                                        translations?.password_placeholder ??
+                                        'Password'
+                                    }
                                 />
                                 <InputError message={errors.password} />
                             </div>
 
                             <div className="grid gap-2">
                                 <Label htmlFor="password_confirmation">
-                                    Confirm password
+                                    {translations?.password_confirm_label ??
+                                        'Confirm password'}
                                 </Label>
                                 <Input
                                     id="password_confirmation"
@@ -83,7 +122,10 @@ export default function Register() {
                                     tabIndex={4}
                                     autoComplete="new-password"
                                     name="password_confirmation"
-                                    placeholder="Confirm password"
+                                    placeholder={
+                                        translations?.password_confirm_placeholder ??
+                                        'Confirm password'
+                                    }
                                 />
                                 <InputError
                                     message={errors.password_confirmation}
@@ -97,14 +139,15 @@ export default function Register() {
                                 data-test="register-user-button"
                             >
                                 {processing && <Spinner />}
-                                Create account
+                                {translations?.submit ?? 'Create account'}
                             </Button>
                         </div>
 
                         <div className="text-center text-sm text-muted-foreground">
-                            Already have an account?{' '}
+                            {translations?.login_prompt ??
+                                'Already have an account?'}{' '}
                             <TextLink href={login()} tabIndex={6}>
-                                Log in
+                                {translations?.login_link ?? 'Log in'}
                             </TextLink>
                         </div>
                     </>
