@@ -38,7 +38,7 @@ export default function Profile({
                 <div className="space-y-6">
                     <HeadingSmall
                         title="Profile information"
-                        description="Update your name and email address"
+                        description="Update your full name and email address"
                     />
 
                     <Form
@@ -51,13 +51,13 @@ export default function Profile({
                         {({ processing, recentlySuccessful, errors }) => (
                             <>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name">Name</Label>
+                                    <Label htmlFor="fullname">Full name</Label>
 
                                     <Input
-                                        id="name"
+                                        id="fullname"
                                         className="mt-1 block w-full"
-                                        defaultValue={auth.user.name}
-                                        name="name"
+                                        defaultValue={auth.user.fullname}
+                                        name="fullname"
                                         required
                                         autoComplete="name"
                                         placeholder="Full name"
@@ -65,7 +65,7 @@ export default function Profile({
 
                                     <InputError
                                         className="mt-2"
-                                        message={errors.name}
+                                        message={errors.fullname}
                                     />
                                 </div>
 

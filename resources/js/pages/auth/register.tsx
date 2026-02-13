@@ -15,10 +15,16 @@ interface RegisterProps {
         page_title: string;
         title: string;
         description: string;
-        name_label: string;
-        name_placeholder: string;
+        id_label: string;
+        id_placeholder: string;
+        fullname_label: string;
+        fullname_placeholder: string;
         email_label: string;
         email_placeholder: string;
+        phone_label: string;
+        phone_placeholder: string;
+        role_label: string;
+        role_user_option: string;
         password_label: string;
         password_placeholder: string;
         password_confirm_label: string;
@@ -49,26 +55,43 @@ export default function Register({ translations }: RegisterProps) {
                     <>
                         <div className="grid gap-6">
                             <div className="grid gap-2">
-                                <Label htmlFor="name">
-                                    {translations?.name_label ?? 'Name'}
+                                <Label htmlFor="id">
+                                    {translations?.id_label ?? 'Personal ID'}
                                 </Label>
                                 <Input
-                                    id="name"
+                                    id="id"
                                     type="text"
                                     required
                                     autoFocus
                                     tabIndex={1}
-                                    autoComplete="name"
-                                    name="name"
+                                    autoComplete="off"
+                                    name="id"
                                     placeholder={
-                                        translations?.name_placeholder ??
+                                        translations?.id_placeholder ??
+                                        'ID number'
+                                    }
+                                />
+                                <InputError message={errors.id} />
+                            </div>
+
+                            <div className="grid gap-2">
+                                <Label htmlFor="fullname">
+                                    {translations?.fullname_label ??
+                                        'Full name'}
+                                </Label>
+                                <Input
+                                    id="fullname"
+                                    type="text"
+                                    required
+                                    tabIndex={2}
+                                    autoComplete="name"
+                                    name="fullname"
+                                    placeholder={
+                                        translations?.fullname_placeholder ??
                                         'Full name'
                                     }
                                 />
-                                <InputError
-                                    message={errors.name}
-                                    className="mt-2"
-                                />
+                                <InputError message={errors.fullname} />
                             </div>
 
                             <div className="grid gap-2">
@@ -80,7 +103,7 @@ export default function Register({ translations }: RegisterProps) {
                                     id="email"
                                     type="email"
                                     required
-                                    tabIndex={2}
+                                    tabIndex={3}
                                     autoComplete="email"
                                     name="email"
                                     placeholder={
@@ -92,6 +115,25 @@ export default function Register({ translations }: RegisterProps) {
                             </div>
 
                             <div className="grid gap-2">
+                                <Label htmlFor="phone">
+                                    {translations?.phone_label ?? 'Phone'}
+                                </Label>
+                                <Input
+                                    id="phone"
+                                    type="tel"
+                                    required
+                                    tabIndex={4}
+                                    autoComplete="tel"
+                                    name="phone"
+                                    placeholder={
+                                        translations?.phone_placeholder ??
+                                        '+1234567890'
+                                    }
+                                />
+                                <InputError message={errors.phone} />
+                            </div>
+
+                            <div className="grid gap-2">
                                 <Label htmlFor="password">
                                     {translations?.password_label ?? 'Password'}
                                 </Label>
@@ -99,7 +141,7 @@ export default function Register({ translations }: RegisterProps) {
                                     id="password"
                                     type="password"
                                     required
-                                    tabIndex={3}
+                                    tabIndex={5}
                                     autoComplete="new-password"
                                     name="password"
                                     placeholder={
@@ -119,7 +161,7 @@ export default function Register({ translations }: RegisterProps) {
                                     id="password_confirmation"
                                     type="password"
                                     required
-                                    tabIndex={4}
+                                    tabIndex={6}
                                     autoComplete="new-password"
                                     name="password_confirmation"
                                     placeholder={
@@ -132,10 +174,30 @@ export default function Register({ translations }: RegisterProps) {
                                 />
                             </div>
 
+                            <div className="grid gap-2">
+                                <Label htmlFor="role">
+                                    {translations?.role_label ?? 'Role'}
+                                </Label>
+                                <select
+                                    id="role"
+                                    required
+                                    tabIndex={7}
+                                    name="role"
+                                    defaultValue="user"
+                                    className="flex h-9 w-full items-center rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[placeholder]:text-muted-foreground dark:aria-invalid:ring-destructive/40"
+                                >
+                                    <option value="user">
+                                        {translations?.role_user_option ??
+                                            'User'}
+                                    </option>
+                                </select>
+                                <InputError message={errors.role} />
+                            </div>
+
                             <Button
                                 type="submit"
                                 className="mt-2 w-full"
-                                tabIndex={5}
+                                tabIndex={8}
                                 data-test="register-user-button"
                             >
                                 {processing && <Spinner />}
@@ -146,7 +208,7 @@ export default function Register({ translations }: RegisterProps) {
                         <div className="text-center text-sm text-muted-foreground">
                             {translations?.login_prompt ??
                                 'Already have an account?'}{' '}
-                            <TextLink href={login()} tabIndex={6}>
+                            <TextLink href={login()} tabIndex={9}>
                                 {translations?.login_link ?? 'Log in'}
                             </TextLink>
                         </div>
