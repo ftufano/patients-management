@@ -1,5 +1,7 @@
 import { Appearance, useAppearance } from '@/hooks/use-appearance';
 import { cn } from '@/lib/utils';
+import { type SharedData } from '@/types';
+import { usePage } from '@inertiajs/react';
 import { LucideIcon, Monitor, Moon, Sun } from 'lucide-react';
 import { HTMLAttributes } from 'react';
 
@@ -8,11 +10,24 @@ export default function AppearanceToggleTab({
     ...props
 }: HTMLAttributes<HTMLDivElement>) {
     const { appearance, updateAppearance } = useAppearance();
+    const { settingsTranslations } = usePage<SharedData>().props;
 
     const tabs: { value: Appearance; icon: LucideIcon; label: string }[] = [
-        { value: 'light', icon: Sun, label: 'Light' },
-        { value: 'dark', icon: Moon, label: 'Dark' },
-        { value: 'system', icon: Monitor, label: 'System' },
+        {
+            value: 'light',
+            icon: Sun,
+            label: settingsTranslations?.appearance?.light ?? 'Light',
+        },
+        {
+            value: 'dark',
+            icon: Moon,
+            label: settingsTranslations?.appearance?.dark ?? 'Dark',
+        },
+        {
+            value: 'system',
+            icon: Monitor,
+            label: settingsTranslations?.appearance?.system ?? 'System',
+        },
     ];
 
     return (
