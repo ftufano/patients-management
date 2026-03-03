@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Patient;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use App\Models\Patient;
+use Inertia\Inertia;
 
 class PatientController extends Controller
 {
@@ -17,7 +18,9 @@ class PatientController extends Controller
             return response()->json($patients);
         }
 
-        return response()->view('apifront', compact('patients'));
+        return Inertia::render('patients', [
+            'patients' => $patients,
+        ]);
     }
 
     public function showById($id)

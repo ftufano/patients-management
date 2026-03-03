@@ -13,7 +13,14 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import {
+    BookOpen,
+    Calendar,
+    FileText,
+    Folder,
+    LayoutGrid,
+    Users,
+} from 'lucide-react';
 import AppLogo from './app-logo';
 
 export function AppSidebar() {
@@ -28,6 +35,21 @@ export function AppSidebar() {
                 'Dashboard',
             href: dashboard(),
             icon: LayoutGrid,
+        },
+        {
+            title: dashboardTranslations?.patients ?? 'Patients',
+            href: '/patients',
+            icon: Users,
+        },
+        {
+            title: dashboardTranslations?.histories ?? 'Histories',
+            href: '/histories',
+            icon: FileText,
+        },
+        {
+            title: dashboardTranslations?.appointments ?? 'Appointments',
+            href: '/appointments',
+            icon: Calendar,
         },
     ];
 

@@ -28,6 +28,9 @@ export interface SharedData {
     dashboardLabel?: string;
     dashboardTranslations?: {
         dashboard?: string;
+        patients?: string;
+        histories?: string;
+        appointments?: string;
         platform?: string;
         repository?: string;
         documentation?: string;
