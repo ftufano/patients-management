@@ -18,6 +18,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('patients', [PatientController::class, 'index'])->name('patients');
+    Route::get('patients/create', [PatientController::class, 'create'])->name('patients.create');
+    Route::post('patients', [PatientController::class, 'store'])->name('patients.store');
 
     Route::get('histories', [ClinicHistoryController::class, 'index'])->name('histories');
 

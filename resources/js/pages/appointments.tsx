@@ -49,6 +49,18 @@ export default function Appointments() {
         });
     }, [appointments, search]);
 
+    const appointmentCountLabel =
+        filteredAppointments.length === 1
+            ? (dashboardTranslations?.appointments_count_one ?? 'appointment')
+            : (dashboardTranslations?.appointments_count_other ??
+              'appointments');
+    const searchPlaceholder =
+        dashboardTranslations?.appointments_search_placeholder ??
+        'Search appointments...';
+    const searchAriaLabel =
+        dashboardTranslations?.appointments_search_aria_label ??
+        'Search appointments';
+
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title,
@@ -63,15 +75,14 @@ export default function Appointments() {
                 <div className="rounded-xl border border-sidebar-border/70 p-6 dark:border-sidebar-border">
                     <h1 className="text-xl font-semibold">{title}</h1>
                     <p className="mt-1 text-sm text-muted-foreground">
-                        {filteredAppointments.length} appointment
-                        {filteredAppointments.length === 1 ? '' : 's'}
+                        {filteredAppointments.length} {appointmentCountLabel}
                     </p>
                     <div className="mt-4 max-w-md">
                         <Input
                             value={search}
                             onChange={(event) => setSearch(event.target.value)}
-                            placeholder="Search appointments..."
-                            aria-label="Search appointments"
+                            placeholder={searchPlaceholder}
+                            aria-label={searchAriaLabel}
                         />
                     </div>
                 </div>

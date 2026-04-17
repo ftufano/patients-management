@@ -47,6 +47,17 @@ export default function Histories() {
         });
     }, [clinicHistories, search]);
 
+    const historyCountLabel =
+        filteredHistories.length === 1
+            ? (dashboardTranslations?.histories_count_one ?? 'history')
+            : (dashboardTranslations?.histories_count_other ?? 'histories');
+    const searchPlaceholder =
+        dashboardTranslations?.histories_search_placeholder ??
+        'Search histories...';
+    const searchAriaLabel =
+        dashboardTranslations?.histories_search_aria_label ??
+        'Search histories';
+
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title,
@@ -61,15 +72,14 @@ export default function Histories() {
                 <div className="rounded-xl border border-sidebar-border/70 p-6 dark:border-sidebar-border">
                     <h1 className="text-xl font-semibold">{title}</h1>
                     <p className="mt-1 text-sm text-muted-foreground">
-                        {filteredHistories.length} histor
-                        {filteredHistories.length === 1 ? 'y' : 'ies'}
+                        {filteredHistories.length} {historyCountLabel}
                     </p>
                     <div className="mt-4 max-w-md">
                         <Input
                             value={search}
                             onChange={(event) => setSearch(event.target.value)}
-                            placeholder="Search histories..."
-                            aria-label="Search histories"
+                            placeholder={searchPlaceholder}
+                            aria-label={searchAriaLabel}
                         />
                     </div>
                 </div>

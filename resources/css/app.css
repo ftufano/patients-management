@@ -64,6 +64,7 @@
 :root {
     --background: oklch(1 0 0);
     --foreground: #1e4f61;
+    --field-hint: rgb(30 79 97 / 0.42);
     --card: oklch(1 0 0);
     --card-foreground: #1e4f61;
     --popover: oklch(1 0 0);
@@ -100,6 +101,7 @@
 .dark {
     --background: oklch(0.145 0 0);
     --foreground: #d7f4ff;
+    --field-hint: rgb(215 244 255 / 0.68);
     --card: oklch(0.145 0 0);
     --card-foreground: #d7f4ff;
     --popover: oklch(0.145 0 0);
