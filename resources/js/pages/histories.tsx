@@ -1,7 +1,8 @@
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
 
 interface ClinicHistoryListItem {
@@ -70,10 +71,22 @@ export default function Histories() {
             <Head title={title} />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="rounded-xl border border-sidebar-border/70 p-6 dark:border-sidebar-border">
-                    <h1 className="text-xl font-semibold">{title}</h1>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                        {filteredHistories.length} {historyCountLabel}
-                    </p>
+                    <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                        <div>
+                            <h1 className="text-xl font-semibold">{title}</h1>
+                            <p className="mt-1 text-sm text-muted-foreground">
+                                {filteredHistories.length} {historyCountLabel}
+                            </p>
+                        </div>
+
+                        <Button asChild>
+                            <Link href="/histories/create">
+                                {dashboardTranslations?.histories_new_button ??
+                                    'New history'}
+                            </Link>
+                        </Button>
+                    </div>
+
                     <div className="mt-4 max-w-md">
                         <Input
                             value={search}
