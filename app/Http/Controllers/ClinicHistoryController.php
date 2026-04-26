@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Models\ClinicHistory;
 use App\Models\Patient;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Inertia\Inertia;
 
 class ClinicHistoryController extends Controller
 {
@@ -18,7 +19,9 @@ class ClinicHistoryController extends Controller
             return response()->json($clinicHistories);
         }
 
-        return response()->view('apifront', compact('clinicHistories'));
+        return Inertia::render('histories', [
+            'clinicHistories' => $clinicHistories,
+        ]);
     }
 
     public function showById($id)

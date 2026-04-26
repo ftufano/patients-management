@@ -15,6 +15,21 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasApiTokens, TwoFactorAuthenticatable;
 
     /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * The data type of the primary key.
+     *
+     * @var string
+     */
+    protected $keyType = 'string';
+
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
@@ -54,4 +69,5 @@ class User extends Authenticatable
             'two_factor_confirmed_at' => 'datetime',
         ];
     }
+
 }

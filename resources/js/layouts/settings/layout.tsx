@@ -6,34 +6,13 @@ import { edit as editAppearance } from '@/routes/appearance';
 import { edit as editPassword } from '@/routes/password';
 import { edit } from '@/routes/profile';
 import { show } from '@/routes/two-factor';
-import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { type NavItem, type SharedData } from '@/types';
+import { Link, usePage } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
 
-const sidebarNavItems: NavItem[] = [
-    {
-        title: 'Profile',
-        href: edit(),
-        icon: null,
-    },
-    {
-        title: 'Password',
-        href: editPassword(),
-        icon: null,
-    },
-    {
-        title: 'Two-Factor Auth',
-        href: show(),
-        icon: null,
-    },
-    {
-        title: 'Appearance',
-        href: editAppearance(),
-        icon: null,
-    },
-];
-
 export default function SettingsLayout({ children }: PropsWithChildren) {
+    const { settingsTranslations } = usePage<SharedData>().props;
+
     // When server-side rendering, we only render the layout on the client...
     if (typeof window === 'undefined') {
         return null;
@@ -41,11 +20,38 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
 
     const currentPath = window.location.pathname;
 
+    const sidebarNavItems: NavItem[] = [
+        {
+            title: settingsTranslations?.layout?.profile ?? 'Profile',
+            href: edit(),
+            icon: null,
+        },
+        {
+            title: settingsTranslations?.layout?.password ?? 'Password',
+            href: editPassword(),
+            icon: null,
+        },
+        {
+            title:
+                settingsTranslations?.layout?.two_factor ?? 'Two-Factor Auth',
+            href: show(),
+            icon: null,
+        },
+        {
+            title: settingsTranslations?.layout?.appearance ?? 'Appearance',
+            href: editAppearance(),
+            icon: null,
+        },
+    ];
+
     return (
         <div className="px-4 py-6">
             <Heading
-                title="Settings"
-                description="Manage your profile and account settings"
+                title={settingsTranslations?.layout?.title ?? 'Settings'}
+                description={
+                    settingsTranslations?.layout?.description ??
+                    'Manage your profile and account settings'
+                }
             />
 
             <div className="flex flex-col lg:flex-row lg:space-x-12">

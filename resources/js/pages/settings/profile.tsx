@@ -14,13 +14,6 @@ import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { edit } from '@/routes/profile';
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Profile settings',
-        href: edit().url,
-    },
-];
-
 export default function Profile({
     mustVerifyEmail,
     status,
@@ -28,17 +21,37 @@ export default function Profile({
     mustVerifyEmail: boolean;
     status?: string;
 }) {
-    const { auth } = usePage<SharedData>().props;
+    const { auth, settingsTranslations } = usePage<SharedData>().props;
+
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title:
+                settingsTranslations?.profile?.breadcrumb ?? 'Profile settings',
+            href: edit().url,
+        },
+    ];
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <Head title="Profile settings" />
+            <Head
+                title={
+                    settingsTranslations?.profile?.page_title ??
+                    'Profile settings'
+                }
+            />
 
             <SettingsLayout>
                 <div className="space-y-6">
                     <HeadingSmall
-                        title="Profile information"
-                        description="Update your name and email address"
+                        title={
+                            settingsTranslations?.profile?.section_title ??
+                            'Profile information'
+                        }
+                        description={
+                            settingsTranslations?.profile
+                                ?.section_description ??
+                            'Update your full name and email address'
+                        }
                     />
 
                     <Form
@@ -51,26 +64,36 @@ export default function Profile({
                         {({ processing, recentlySuccessful, errors }) => (
                             <>
                                 <div className="grid gap-2">
-                                    <Label htmlFor="name">Name</Label>
+                                    <Label htmlFor="fullname">
+                                        {settingsTranslations?.profile
+                                            ?.fullname_label ?? 'Full name'}
+                                    </Label>
 
                                     <Input
-                                        id="name"
+                                        id="fullname"
                                         className="mt-1 block w-full"
-                                        defaultValue={auth.user.name}
-                                        name="name"
+                                        defaultValue={auth.user.fullname}
+                                        name="fullname"
                                         required
                                         autoComplete="name"
-                                        placeholder="Full name"
+                                        placeholder={
+                                            settingsTranslations?.profile
+                                                ?.fullname_placeholder ??
+                                            'Full name'
+                                        }
                                     />
 
                                     <InputError
                                         className="mt-2"
-                                        message={errors.name}
+                                        message={errors.fullname}
                                     />
                                 </div>
 
                                 <div className="grid gap-2">
-                                    <Label htmlFor="email">Email address</Label>
+                                    <Label htmlFor="email">
+                                        {settingsTranslations?.profile
+                                            ?.email_label ?? 'Email address'}
+                                    </Label>
 
                                     <Input
                                         id="email"
@@ -80,7 +103,11 @@ export default function Profile({
                                         name="email"
                                         required
                                         autoComplete="username"
-                                        placeholder="Email address"
+                                        placeholder={
+                                            settingsTranslations?.profile
+                                                ?.email_placeholder ??
+                                            'Email address'
+                                        }
                                     />
 
                                     <InputError
@@ -93,24 +120,28 @@ export default function Profile({
                                     auth.user.email_verified_at === null && (
                                         <div>
                                             <p className="-mt-4 text-sm text-muted-foreground">
-                                                Your email address is
-                                                unverified.{' '}
+                                                {settingsTranslations?.profile
+                                                    ?.email_unverified ??
+                                                    'Your email address is unverified.'}{' '}
                                                 <Link
                                                     href={send()}
                                                     as="button"
                                                     className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                                                 >
-                                                    Click here to resend the
-                                                    verification email.
+                                                    {settingsTranslations
+                                                        ?.profile
+                                                        ?.resend_verification ??
+                                                        'Click here to resend the verification email.'}
                                                 </Link>
                                             </p>
 
                                             {status ===
                                                 'verification-link-sent' && (
                                                 <div className="mt-2 text-sm font-medium text-green-600">
-                                                    A new verification link has
-                                                    been sent to your email
-                                                    address.
+                                                    {settingsTranslations
+                                                        ?.profile
+                                                        ?.verification_sent ??
+                                                        'A new verification link has been sent to your email address.'}
                                                 </div>
                                             )}
                                         </div>
@@ -121,7 +152,8 @@ export default function Profile({
                                         disabled={processing}
                                         data-test="update-profile-button"
                                     >
-                                        Save
+                                        {settingsTranslations?.profile?.save ??
+                                            'Save'}
                                     </Button>
 
                                     <Transition
@@ -132,7 +164,8 @@ export default function Profile({
                                         leaveTo="opacity-0"
                                     >
                                         <p className="text-sm text-neutral-600">
-                                            Saved
+                                            {settingsTranslations?.profile
+                                                ?.saved ?? 'Saved'}
                                         </p>
                                     </Transition>
                                 </div>
