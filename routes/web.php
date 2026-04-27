@@ -27,6 +27,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('histories', [ClinicHistoryController::class, 'store'])->name('histories.store');
 
     Route::get('appointments', [AppointmentController::class, 'index'])->name('appointments');
+    Route::get('appointments/create', fn () => Inertia::render('appointments/create'))->name('appointments.create');
+    Route::get('appointments/verify-patient', [AppointmentController::class, 'verifyPatient'])->name('appointments.verify-patient');
+    Route::post('appointments', [AppointmentController::class, 'store'])->name('appointments.store');
 });
 
 require __DIR__.'/settings.php';
