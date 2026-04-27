@@ -7,17 +7,20 @@ import { useMemo, useState } from 'react';
 
 interface AppointmentListItem {
     id: string;
+    clinic_history_id: string;
+    patient_id: string | null;
+    patient_name: string | null;
     date: string | null;
     reason: string | null;
     current_illness: string | null;
     diagnosis: string | null;
+    discharge_date: string | null;
     discharge_summary: string | null;
     discharge_reason: string | null;
-    clinic_history_id: string;
 }
 
 export default function Appointments() {
-    const { dashboardTranslations, appointments } = usePage<
+    const { dashboardTranslations, appointments, locale } = usePage<
         SharedData & { appointments: AppointmentListItem[] }
     >().props;
     const [search, setSearch] = useState('');
@@ -34,13 +37,16 @@ export default function Appointments() {
         return appointments.filter((appointment) => {
             const rowText = [
                 appointment.id,
+                appointment.clinic_history_id,
+                appointment.patient_id,
+                appointment.patient_name,
                 appointment.date,
                 appointment.reason,
                 appointment.current_illness,
                 appointment.diagnosis,
+                appointment.discharge_date,
                 appointment.discharge_summary,
                 appointment.discharge_reason,
-                appointment.clinic_history_id,
             ]
                 .filter((value) => value !== null && value !== undefined)
                 .join(' ')
@@ -61,6 +67,31 @@ export default function Appointments() {
     const searchAriaLabel =
         dashboardTranslations?.appointments_search_aria_label ??
         'Search appointments';
+    const activeLocale = locale ?? document.documentElement.lang ?? 'en';
+
+    const formatAppointmentDate = (value: string | null) => {
+        if (!value) {
+            return '-';
+        }
+
+        const match = value.match(/^(\d{4})-(\d{2})-(\d{2})/);
+
+        if (!match) {
+            return value;
+        }
+
+        const year = Number(match[1]);
+        const month = Number(match[2]);
+        const day = Number(match[3]);
+        const parsedDate = new Date(Date.UTC(year, month - 1, day));
+
+        return new Intl.DateTimeFormat(activeLocale, {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            timeZone: 'UTC',
+        }).format(parsedDate);
+    };
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -104,7 +135,8 @@ export default function Appointments() {
                 <div className="rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
                     {filteredAppointments.length === 0 ? (
                         <p className="p-6 text-sm text-muted-foreground">
-                            No matching appointments found.
+                            {dashboardTranslations?.appointments_no_matches ??
+                                'No matching appointments found.'}
                         </p>
                     ) : (
                         <div className="overflow-x-auto">
@@ -112,28 +144,44 @@ export default function Appointments() {
                                 <thead className="border-b border-sidebar-border/70 text-muted-foreground">
                                     <tr>
                                         <th className="px-4 py-3 font-medium">
-                                            ID
+                                            {dashboardTranslations?.appointments_col_patient_id ??
+                                                'Patient ID'}
                                         </th>
                                         <th className="px-4 py-3 font-medium">
-                                            Date
+                                            {dashboardTranslations?.appointments_col_history_id ??
+                                                'History ID'}
                                         </th>
                                         <th className="px-4 py-3 font-medium">
-                                            Reason
+                                            {dashboardTranslations?.appointments_col_patient_name ??
+                                                'Patient name'}
                                         </th>
                                         <th className="px-4 py-3 font-medium">
-                                            Current illness
+                                            {dashboardTranslations?.appointments_col_date ??
+                                                'Date'}
                                         </th>
                                         <th className="px-4 py-3 font-medium">
-                                            Diagnosis
+                                            {dashboardTranslations?.appointments_col_reason ??
+                                                'Reason'}
                                         </th>
                                         <th className="px-4 py-3 font-medium">
-                                            Discharge summary
+                                            {dashboardTranslations?.appointments_col_current_illness ??
+                                                'Current illness'}
                                         </th>
                                         <th className="px-4 py-3 font-medium">
-                                            Discharge reason
+                                            {dashboardTranslations?.appointments_col_diagnosis ??
+                                                'Diagnosis'}
                                         </th>
                                         <th className="px-4 py-3 font-medium">
-                                            Clinic history ID
+                                            {dashboardTranslations?.appointments_col_discharge_date ??
+                                                'Discharge date'}
+                                        </th>
+                                        <th className="px-4 py-3 font-medium">
+                                            {dashboardTranslations?.appointments_col_discharge_summary ??
+                                                'Discharge summary'}
+                                        </th>
+                                        <th className="px-4 py-3 font-medium">
+                                            {dashboardTranslations?.appointments_col_discharge_reason ??
+                                                'Discharge reason'}
                                         </th>
                                     </tr>
                                 </thead>
@@ -144,10 +192,19 @@ export default function Appointments() {
                                             className="border-b border-sidebar-border/50 last:border-b-0"
                                         >
                                             <td className="px-4 py-3">
-                                                {appointment.id}
+                                                {appointment.patient_id ?? '-'}
                                             </td>
                                             <td className="px-4 py-3">
-                                                {appointment.date ?? '-'}
+                                                {appointment.clinic_history_id}
+                                            </td>
+                                            <td className="px-4 py-3">
+                                                {appointment.patient_name ??
+                                                    '-'}
+                                            </td>
+                                            <td className="px-4 py-3">
+                                                {formatAppointmentDate(
+                                                    appointment.date,
+                                                )}
                                             </td>
                                             <td className="px-4 py-3">
                                                 {appointment.reason ?? '-'}
@@ -160,15 +217,17 @@ export default function Appointments() {
                                                 {appointment.diagnosis ?? '-'}
                                             </td>
                                             <td className="px-4 py-3">
+                                                {formatAppointmentDate(
+                                                    appointment.discharge_date,
+                                                )}
+                                            </td>
+                                            <td className="px-4 py-3">
                                                 {appointment.discharge_summary ??
                                                     '-'}
                                             </td>
                                             <td className="px-4 py-3">
                                                 {appointment.discharge_reason ??
                                                     '-'}
-                                            </td>
-                                            <td className="px-4 py-3">
-                                                {appointment.clinic_history_id}
                                             </td>
                                         </tr>
                                     ))}

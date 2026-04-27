@@ -41,6 +41,7 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'name' => config('app.name'),
+            'locale' => app()->getLocale(),
             'appTitle' => trans('welcome.product_name'),
             'dashboardLabel' => trans('welcome.dashboard'),
             'dashboardTranslations' => trans('dashboard'),

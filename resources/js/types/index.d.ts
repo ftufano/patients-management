@@ -24,6 +24,7 @@ export interface NavItem {
 
 export interface SharedData {
     name: string;
+    locale?: string;
     appTitle?: string;
     dashboardLabel?: string;
     dashboardTranslations?: {
@@ -66,6 +67,15 @@ export interface SharedData {
         histories_count_other?: string;
         histories_search_placeholder?: string;
         histories_search_aria_label?: string;
+        histories_col_id?: string;
+        histories_col_history?: string;
+        histories_col_patient_name?: string;
+        histories_col_mother_history?: string;
+        histories_col_father_history?: string;
+        histories_col_brothers_history?: string;
+        histories_col_sons_history?: string;
+        histories_col_alergies?: string;
+        histories_no_matches?: string;
         histories_new_button?: string;
         histories_create_title?: string;
         histories_create_description?: string;
@@ -94,7 +104,18 @@ export interface SharedData {
         appointments_count_other?: string;
         appointments_search_placeholder?: string;
         appointments_search_aria_label?: string;
+        appointments_no_matches?: string;
         appointments_new_button?: string;
+        appointments_col_patient_id?: string;
+        appointments_col_history_id?: string;
+        appointments_col_patient_name?: string;
+        appointments_col_date?: string;
+        appointments_col_reason?: string;
+        appointments_col_current_illness?: string;
+        appointments_col_diagnosis?: string;
+        appointments_col_discharge_date?: string;
+        appointments_col_discharge_summary?: string;
+        appointments_col_discharge_reason?: string;
         appointments_create_title?: string;
         appointments_create_description?: string;
         appointments_create_back?: string;

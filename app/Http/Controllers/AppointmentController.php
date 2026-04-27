@@ -20,8 +20,41 @@ class AppointmentController extends Controller
             return response()->json($appointments);
         }
 
+        $appointmentsForView = Appointment::query()
+            ->leftJoin('clinic_history', 'clinic_history.id', '=', 'appointment.clinic_history_id')
+            ->leftJoin('patient', 'patient.id', '=', 'clinic_history.patient_id')
+            ->select([
+                'appointment.id',
+                'appointment.date',
+                'appointment.reason',
+                'appointment.current_illness',
+                'appointment.diagnosis',
+                'appointment.discharge_date',
+                'appointment.discharge_summary',
+                'appointment.discharge_reason',
+                'appointment.clinic_history_id',
+                'clinic_history.patient_id as patient_id',
+                'patient.fullname as patient_name',
+            ])
+            ->get()
+            ->map(function (Appointment $appointment) {
+                return [
+                    'id' => (string) $appointment->id,
+                    'date' => optional($appointment->date)->toISOString(),
+                    'reason' => $appointment->reason,
+                    'current_illness' => $appointment->current_illness,
+                    'diagnosis' => $appointment->diagnosis,
+                    'discharge_date' => $appointment->discharge_date,
+                    'discharge_summary' => $appointment->discharge_summary,
+                    'discharge_reason' => $appointment->discharge_reason,
+                    'clinic_history_id' => (string) $appointment->clinic_history_id,
+                    'patient_id' => $appointment->patient_id,
+                    'patient_name' => $appointment->patient_name,
+                ];
+            });
+
         return Inertia::render('appointments/dashboard', [
-            'appointments' => $appointments,
+            'appointments' => $appointmentsForView,
         ]);
     }
 
@@ -131,7 +164,7 @@ class AppointmentController extends Controller
             'reason' => $validated['reason'],
             'current_illness' => $validated['current_illness'],
             'diagnosis' => $validated['diagnosis'],
-            'discharge date' => $validated['discharge_date'],
+            'discharge_date' => $validated['discharge_date'],
             'discharge_summary' => $validated['discharge_summary'],
             'discharge_reason' => $validated['discharge_reason'],
             'clinic_history_id' => $validated['clinic_history_id'],

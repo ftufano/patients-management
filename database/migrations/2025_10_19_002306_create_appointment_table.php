@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('reason');
             $table->string('current_illness');
             $table->string('diagnosis');
-            $table->date('discharge date');
+            $table->date('discharge_date');
             $table->string('discharge_summary');
             $table->string('discharge_reason', 45);
             $table->unsignedBigInteger('clinic_history_id');

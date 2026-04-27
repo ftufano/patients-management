@@ -13,7 +13,7 @@ class ClinicHistoryController extends Controller
 {
     public function index()
     {
-        $clinicHistories = ClinicHistory::all();
+        $clinicHistories = ClinicHistory::with(['patient:id,fullname'])->get();
 
         if (request()->wantsJson()) {
             return response()->json($clinicHistories);

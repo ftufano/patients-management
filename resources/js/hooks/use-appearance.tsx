@@ -2,6 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 
 export type Appearance = 'light' | 'dark' | 'system';
 
+const APPEARANCE_KEY = 'appearance';
+
 const prefersDark = () => {
     if (typeof window === 'undefined') {
         return false;
@@ -35,19 +37,68 @@ const mediaQuery = () => {
     return window.matchMedia('(prefers-color-scheme: dark)');
 };
 
+const getStoredAppearance = (): Appearance | null => {
+    if (typeof window === 'undefined') {
+        return null;
+    }
+
+    try {
+        return localStorage.getItem(APPEARANCE_KEY) as Appearance | null;
+    } catch {
+        return null;
+    }
+};
+
+const setStoredAppearance = (mode: Appearance) => {
+    if (typeof window === 'undefined') {
+        return;
+    }
+
+    try {
+        localStorage.setItem(APPEARANCE_KEY, mode);
+    } catch {
+        // Ignore storage failures (e.g. strict privacy modes).
+    }
+};
+
+const addMediaQueryListener = (
+    mql: MediaQueryList,
+    listener: (event: MediaQueryListEvent) => void,
+) => {
+    if (typeof mql.addEventListener === 'function') {
+        mql.addEventListener('change', listener);
+        return;
+    }
+
+    mql.addListener(listener);
+};
+
+const removeMediaQueryListener = (
+    mql: MediaQueryList,
+    listener: (event: MediaQueryListEvent) => void,
+) => {
+    if (typeof mql.removeEventListener === 'function') {
+        mql.removeEventListener('change', listener);
+        return;
+    }
+
+    mql.removeListener(listener);
+};
+
 const handleSystemThemeChange = () => {
-    const currentAppearance = localStorage.getItem('appearance') as Appearance;
+    const currentAppearance = getStoredAppearance();
     applyTheme(currentAppearance || 'system');
 };
 
 export function initializeTheme() {
-    const savedAppearance =
-        (localStorage.getItem('appearance') as Appearance) || 'system';
+    const savedAppearance = getStoredAppearance() || 'system';
 
     applyTheme(savedAppearance);
 
-    // Add the event listener for system theme changes...
-    mediaQuery()?.addEventListener('change', handleSystemThemeChange);
+    const mql = mediaQuery();
+    if (mql) {
+        addMediaQueryListener(mql, handleSystemThemeChange);
+    }
 }
 
 export function useAppearance() {
@@ -57,7 +108,7 @@ export function useAppearance() {
         setAppearance(mode);
 
         // Store in localStorage for client-side persistence...
-        localStorage.setItem('appearance', mode);
+        setStoredAppearance(mode);
 
         // Store in cookie for SSR...
         setCookie('appearance', mode);
@@ -66,16 +117,17 @@ export function useAppearance() {
     }, []);
 
     useEffect(() => {
-        const savedAppearance = localStorage.getItem(
-            'appearance',
-        ) as Appearance | null;
+        const savedAppearance = getStoredAppearance();
         updateAppearance(savedAppearance || 'system');
 
-        return () =>
-            mediaQuery()?.removeEventListener(
-                'change',
-                handleSystemThemeChange,
-            );
+        const mql = mediaQuery();
+        if (!mql) {
+            return;
+        }
+
+        addMediaQueryListener(mql, handleSystemThemeChange);
+
+        return () => removeMediaQueryListener(mql, handleSystemThemeChange);
     }, [updateAppearance]);
 
     return { appearance, updateAppearance } as const;
