@@ -18,7 +18,7 @@ class PatientController extends Controller
             return response()->json($patients);
         }
 
-        return Inertia::render('patients', [
+        return Inertia::render('patients/dashboard', [
             'patients' => $patients,
         ]);
     }

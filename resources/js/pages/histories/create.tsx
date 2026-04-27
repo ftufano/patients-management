@@ -206,6 +206,7 @@ export default function CreateHistory() {
                                             id="patient_id"
                                             name="patient_id"
                                             type="text"
+                                            className="w-full sm:w-64"
                                             autoComplete="off"
                                             autoCorrect="off"
                                             autoCapitalize="off"

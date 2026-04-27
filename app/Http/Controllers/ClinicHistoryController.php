@@ -19,7 +19,7 @@ class ClinicHistoryController extends Controller
             return response()->json($clinicHistories);
         }
 
-        return Inertia::render('histories', [
+        return Inertia::render('histories/dashboard', [
             'clinicHistories' => $clinicHistories,
         ]);
     }

@@ -20,7 +20,7 @@ class AppointmentController extends Controller
             return response()->json($appointments);
         }
 
-        return Inertia::render('appointments', [
+        return Inertia::render('appointments/dashboard', [
             'appointments' => $appointments,
         ]);
     }
