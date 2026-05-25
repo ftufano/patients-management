@@ -106,6 +106,8 @@ export default function Register({ translations }: RegisterProps) {
                                     tabIndex={3}
                                     autoComplete="email"
                                     name="email"
+                                    pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+                                    title="Use a valid email like name@domain.com"
                                     placeholder={
                                         translations?.email_placeholder ??
                                         'email@example.com'
