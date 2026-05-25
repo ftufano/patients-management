@@ -7,10 +7,11 @@ import { defineConfig } from 'vite';
 export default defineConfig({
     server: {
         host: '0.0.0.0',
-        port: 5174,
+        port: Number(process.env.VITE_PORT ?? 5174),
         strictPort: true,
-        origin: 'http://192.168.0.150:5174',
-        cors: true,
+        hmr: {
+            host: process.env.VITE_HMR_HOST ?? 'localhost',
+        },
     },
     plugins: [
         laravel({

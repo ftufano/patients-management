@@ -1,12 +1,17 @@
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 import { useMemo, useState } from 'react';
 
 interface ClinicHistoryListItem {
     id: string;
     patient_id: string;
+    patient?: {
+        id: string;
+        fullname: string;
+    } | null;
     mother_history: string | null;
     father_history: string | null;
     brothers_history: string | null;
@@ -33,6 +38,7 @@ export default function Histories() {
             const rowText = [
                 history.id,
                 history.patient_id,
+                history.patient?.fullname,
                 history.mother_history,
                 history.father_history,
                 history.brothers_history,
@@ -70,10 +76,22 @@ export default function Histories() {
             <Head title={title} />
             <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
                 <div className="rounded-xl border border-sidebar-border/70 p-6 dark:border-sidebar-border">
-                    <h1 className="text-xl font-semibold">{title}</h1>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                        {filteredHistories.length} {historyCountLabel}
-                    </p>
+                    <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                        <div>
+                            <h1 className="text-xl font-semibold">{title}</h1>
+                            <p className="mt-1 text-sm text-muted-foreground">
+                                {filteredHistories.length} {historyCountLabel}
+                            </p>
+                        </div>
+
+                        <Button asChild>
+                            <Link href="/histories/create">
+                                {dashboardTranslations?.histories_new_button ??
+                                    'New history'}
+                            </Link>
+                        </Button>
+                    </div>
+
                     <div className="mt-4 max-w-md">
                         <Input
                             value={search}
@@ -87,7 +105,8 @@ export default function Histories() {
                 <div className="rounded-xl border border-sidebar-border/70 dark:border-sidebar-border">
                     {filteredHistories.length === 0 ? (
                         <p className="p-6 text-sm text-muted-foreground">
-                            No matching histories found.
+                            {dashboardTranslations?.histories_no_matches ??
+                                'No matching histories found.'}
                         </p>
                     ) : (
                         <div className="overflow-x-auto">
@@ -95,25 +114,36 @@ export default function Histories() {
                                 <thead className="border-b border-sidebar-border/70 text-muted-foreground">
                                     <tr>
                                         <th className="px-4 py-3 font-medium">
-                                            ID
+                                            {dashboardTranslations?.histories_col_history ??
+                                                'History'}
                                         </th>
                                         <th className="px-4 py-3 font-medium">
-                                            Patient ID
+                                            {dashboardTranslations?.histories_col_id ??
+                                                'ID'}
                                         </th>
                                         <th className="px-4 py-3 font-medium">
-                                            Mother history
+                                            {dashboardTranslations?.histories_col_patient_name ??
+                                                'Patient name'}
                                         </th>
                                         <th className="px-4 py-3 font-medium">
-                                            Father history
+                                            {dashboardTranslations?.histories_col_mother_history ??
+                                                'Mother history'}
                                         </th>
                                         <th className="px-4 py-3 font-medium">
-                                            Brothers history
+                                            {dashboardTranslations?.histories_col_father_history ??
+                                                'Father history'}
                                         </th>
                                         <th className="px-4 py-3 font-medium">
-                                            Sons history
+                                            {dashboardTranslations?.histories_col_brothers_history ??
+                                                'Brothers history'}
                                         </th>
                                         <th className="px-4 py-3 font-medium">
-                                            Alergies
+                                            {dashboardTranslations?.histories_col_sons_history ??
+                                                'Sons history'}
+                                        </th>
+                                        <th className="px-4 py-3 font-medium">
+                                            {dashboardTranslations?.histories_col_alergies ??
+                                                'Alergies'}
                                         </th>
                                     </tr>
                                 </thead>
@@ -128,6 +158,10 @@ export default function Histories() {
                                             </td>
                                             <td className="px-4 py-3">
                                                 {history.patient_id}
+                                            </td>
+                                            <td className="px-4 py-3">
+                                                {history.patient?.fullname ??
+                                                    '-'}
                                             </td>
                                             <td className="px-4 py-3">
                                                 {history.mother_history ?? '-'}
