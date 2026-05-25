@@ -16,7 +16,7 @@ class Appointment extends Model
         'reason',
         'current_illness',
         'diagnosis',
-        'discharge date',
+        'discharge_date',
         'discharge_summary',
         'discharge_reason',
         'clinic_history_id',

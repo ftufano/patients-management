@@ -8,8 +8,8 @@ import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
 import { logout } from '@/routes';
 import { edit } from '@/routes/profile';
-import { type User } from '@/types';
-import { Link, router } from '@inertiajs/react';
+import { type SharedData, type User } from '@/types';
+import { Link, router, usePage } from '@inertiajs/react';
 import { LogOut, Settings } from 'lucide-react';
 
 interface UserMenuContentProps {
@@ -18,6 +18,7 @@ interface UserMenuContentProps {
 
 export function UserMenuContent({ user }: UserMenuContentProps) {
     const cleanup = useMobileNavigation();
+    const { dashboardTranslations } = usePage<SharedData>().props;
 
     const handleLogout = () => {
         cleanup();
@@ -27,13 +28,16 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
     return (
         <>
             <DropdownMenuLabel className="p-0 font-normal">
-                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+                <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm text-slate-900 [&_.text-muted-foreground]:text-slate-600">
                     <UserInfo user={user} showEmail={true} />
                 </div>
             </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+            <DropdownMenuSeparator className="bg-white/50" />
             <DropdownMenuGroup>
-                <DropdownMenuItem asChild>
+                <DropdownMenuItem
+                    asChild
+                    className="text-slate-900 focus:bg-white/75 focus:text-slate-900 [&_svg]:text-slate-700"
+                >
                     <Link
                         className="block w-full"
                         href={edit()}
@@ -41,13 +45,16 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                         prefetch
                         onClick={cleanup}
                     >
-                        <Settings className="mr-2" />
-                        Settings
+                        <Settings className="mr-2 text-slate-700" />
+                        {dashboardTranslations?.settings ?? 'Settings'}
                     </Link>
                 </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
+            <DropdownMenuSeparator className="bg-white/50" />
+            <DropdownMenuItem
+                asChild
+                className="text-slate-900 focus:bg-white/75 focus:text-slate-900 [&_svg]:text-slate-700"
+            >
                 <Link
                     className="block w-full"
                     href={logout()}
@@ -55,8 +62,8 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
                     onClick={handleLogout}
                     data-test="logout-button"
                 >
-                    <LogOut className="mr-2" />
-                    Log out
+                    <LogOut className="mr-2 text-slate-700" />
+                    {dashboardTranslations?.logout ?? 'Log out'}
                 </Link>
             </DropdownMenuItem>
         </>
