@@ -3,6 +3,7 @@ import { login } from '@/routes';
 import { Form, Head } from '@inertiajs/react';
 
 import InputError from '@/components/input-error';
+import PhoneField from '@/components/phone-field';
 import TextLink from '@/components/text-link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -120,19 +121,13 @@ export default function Register({ translations }: RegisterProps) {
                                 <Label htmlFor="phone">
                                     {translations?.phone_label ?? 'Phone'}
                                 </Label>
-                                <Input
+                                <PhoneField
                                     id="phone"
-                                    type="tel"
-                                    required
+                                    name="phone"
                                     tabIndex={4}
                                     autoComplete="tel"
-                                    name="phone"
-                                    placeholder={
-                                        translations?.phone_placeholder ??
-                                        '+1234567890'
-                                    }
+                                    error={errors.phone}
                                 />
-                                <InputError message={errors.phone} />
                             </div>
 
                             <div className="grid gap-2">
